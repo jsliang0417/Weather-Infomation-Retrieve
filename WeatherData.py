@@ -1,6 +1,10 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-class retrieve_api:
+load_dotenv()
+
+class WeatherData:
     def __init__(self, city_name, state_name):
         self.city_name = city_name
         self.state_name = state_name
@@ -32,11 +36,11 @@ class retrieve_api:
     def feels_like_cel(self):
         feels_like = self.weather_api["main"]["feels_like"]
         feels_like_cel = feels_like - 273.15
-        return "The weather today feels like: {0}".format(feels_like_cel)
+        return "The weather today feels like: {0}".format(round(feels_like_cel, 2))
     
     def weather_humidity(self):
         weather_humidity = self.weather_api["main"]["humidity"]
-        return "Humidity: {0}".format(weather_humidity)
+        return "{0}%".format(weather_humidity)
     
     def temp_min_fah(self):
         temp_min = self.weather_api["main"]["temp_min"]
@@ -46,7 +50,7 @@ class retrieve_api:
     def temp_min_cel(self):
         temp_min = self.weather_api["main"]["temp_min"]
         temp_min_cel = temp_min - 273.15
-        return "Lowest Temperature: {0}".format(temp_min_cel)
+        return "Lowest Temperature: {0}".format(round(temp_min_cel, 2))
     
     def temp_max_fah(self):
         temp_max = self.weather_api["main"]["temp_max"]
@@ -56,22 +60,21 @@ class retrieve_api:
     def temp_max_cel(self):
         temp_max = self.weather_api["main"]["temp_max"]
         temp_max_cel = temp_max - 273.15
-        return "Highest Temperature: {0}".format(temp_max_cel)
-
+        return "Highest Temperature: {0}".format(round(temp_max_cel, 2))
 
 
 if __name__ == "__main__":
-    # Testing
     city = input("City Name: ")
     state = input("State Name: ")
-    API_KEY = "2b2bc47db728fbe9d893a43e654f0903"
-    test = retrieve_api(city, state)
+    API_KEY = os.getenv("API_KEY")
+    API_KEY = "{0}".format(API_KEY)
+    data = WeatherData(city, state)
 
     print("-------------------{0}, {1} Weather Result-------------------".format(city, state))
-    print("Temperature: {0}".format(test.get_weather_temp_cel()))
-    print("Humidity: {0}".format(test.weather_humidity()))
-    print("The weather today feels like: {0}".format(test.feels_like_cel()))
-    print("Lowest Temperature: {0}".format(test.temp_min_cel()))
-    print("Highest Temperature: {0}".format(test.temp_max_cel()))
-    print("Weather Description: {0}".format(test.get_weather_description()))
+    print("Temperature: {0}".format(data.get_weather_temp_cel()))
+    print("Humidity: {0}".format(data.weather_humidity()))
+    print("The weather today feels like: {0}".format(data.feels_like_cel()))
+    print("Lowest Temperature: {0}".format(data.temp_min_cel()))
+    print("Highest Temperature: {0}".format(data.temp_max_cel()))
+    print("Weather Description: {0}".format(data.get_weather_description()))
     print("\nEnd of Searching")

@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 import tkinter as tk
-import info_retrieve
+import WeatherData
 
 
-class NewprojectApp:
+class WeatherUI:
     def __init__(self, master=None):
         # build ui
         
@@ -34,7 +34,7 @@ class NewprojectApp:
         self.Text_2.configure(height="10", width="50")
         _text_ = """State"""
 
-        api = info_retrieve(self.Entry_1.get(), self.Entry_2.get())
+        api = WeatherData(self.Entry_1.get(), self.Entry_2.get())
         
         self.Text_2.insert("0.0", _text_)
         self.Text_2.place(
@@ -55,5 +55,5 @@ class NewprojectApp:
 
 
 if __name__ == "__main__":
-    app = NewprojectApp()
+    app = WeatherUI()
     app.run()
